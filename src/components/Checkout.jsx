@@ -18,6 +18,8 @@ const Checkout = () => {
         userProgressCtx.hideCheckout();
     };
 
+    const handleSubmit = () => { };
+
     return (
         <Modal open={userProgressCtx.progress == "checkout"} onClose={handleClose}>
             <form>
