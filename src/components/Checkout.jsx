@@ -21,8 +21,21 @@ const Checkout = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const fd = FormData(event.target);
+        const fd = new FormData(event.target);
         const customerData = Object.fromEntries(fd.entries());
+
+        fetch("http://localhost:3000/orders", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                order: {
+                    items: cartCtx.items,
+                    customer: customerData,
+                },
+            }),
+        });
     };
 
     return (
@@ -30,7 +43,7 @@ const Checkout = () => {
             <form onSubmit={handleSubmit}>
                 <h2>Checkout</h2>
                 <p>Total Amount: {currencyFormatter.format(cartTotal)}</p>
-                <Input label="Full Name" type="text" id="full-name" />
+                <Input label="Full Name" type="text" id="name" />
                 <Input label="E-Mail Address" type="text" id="email" />
                 <Input label="Street" type="text" id="street" />
                 <div className="control-row">
@@ -38,10 +51,10 @@ const Checkout = () => {
                     <Input label="City" type="text" id="city" />
                 </div>
                 <p className="modal-actions">
-                    <Button onCick={handleClose} type="button" textOnly>
+                    <Button onClick={handleClose} type="button" textOnly>
                         Close
                     </Button>
-                    <Button>Submit the Order</Button>
+                    <Button type="submit">Submit the Order</Button>
                 </p>
             </form>
         </Modal>
